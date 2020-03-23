@@ -1,8 +1,8 @@
-package com.riccardocalligaro.forecastapp.data
+package com.riccardocalligaro.forecastapp.data.network
 
 import android.util.Log
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.riccardocalligaro.forecastapp.data.response.CurrentWeatherResponse
+import com.riccardocalligaro.forecastapp.data.network.response.CurrentWeatherResponse
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -29,7 +29,9 @@ interface WeatherStackApiService {
                 val url = chain.request()
                     .url()
                     .newBuilder()
-                    .addQueryParameter("access_key", API_KEY)
+                    .addQueryParameter("access_key",
+                        API_KEY
+                    )
                     .build()
 
 

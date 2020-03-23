@@ -9,6 +9,7 @@ data class Location(
     val country: String,
     val lat: String,
     val localtime: String,
+    @Json(name = "localtime_epoch")
     val localtimeEpoch: Int,
     val lon: String,
     val name: String,

@@ -1,10 +1,15 @@
 package com.riccardocalligaro.forecastapp.data.db.entity
 
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+const val CURRENT_WEATHER_ID = 0
+
 @JsonClass(generateAdapter = true)
+@Entity(tableName = "current_weather")
 data class CurrentWeatherEntry(
     val cloudcover: Int,
 
@@ -43,7 +48,10 @@ data class CurrentWeatherEntry(
 
     @Json(name = "wind_dir")
     val windDir: String,
-    
+
     @Json(name = "wind_speed")
     val windSpeed: Double
-)
+) {
+    @PrimaryKey(autoGenerate = false)
+    var id: Int = CURRENT_WEATHER_ID
+}

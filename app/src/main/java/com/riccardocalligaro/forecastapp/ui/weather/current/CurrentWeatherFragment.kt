@@ -8,7 +8,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 
 import com.riccardocalligaro.forecastapp.R
-import com.riccardocalligaro.forecastapp.data.WeatherStackApiService
+import com.riccardocalligaro.forecastapp.data.network.WeatherStackApiService
+import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -35,7 +36,8 @@ class CurrentWeatherFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(CurrentWeatherViewModel::class.java)
         //viewModel = ViewModelProviders.of(this).get(CurrentWeatherViewModel::class.java)
 
-        val apiService = WeatherStackApiService()
+        val apiService =
+            WeatherStackApiService()
 
         GlobalScope.launch(Dispatchers.Main) {
             val response = apiService.getCurrentWeatherAsync("New York").await()

@@ -1,4 +1,4 @@
-package com.riccardocalligaro.forecastapp.data.response
+package com.riccardocalligaro.forecastapp.data.network.response
 
 
 import com.squareup.moshi.Json
