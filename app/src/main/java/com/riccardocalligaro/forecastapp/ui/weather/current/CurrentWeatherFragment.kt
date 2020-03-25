@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
 import com.riccardocalligaro.forecastapp.R
 import com.riccardocalligaro.forecastapp.data.network.WeatherStackApiService
+import com.riccardocalligaro.forecastapp.data.network.interceptors.ConnectivityInterceptorImpl
+import com.riccardocalligaro.forecastapp.data.network.sources.WeatherNetworkDataSourceImpl
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.Dispatchers
@@ -34,15 +37,25 @@ class CurrentWeatherFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(CurrentWeatherViewModel::class.java)
-        //viewModel = ViewModelProviders.of(this).get(CurrentWeatherViewModel::class.java)
 
         val apiService =
-            WeatherStackApiService()
+            WeatherStackApiService(ConnectivityInterceptorImpl(this.context!!))
 
+        // Create the service
+        val weatherNetworkDataSource = WeatherNetworkDataSourceImpl(apiService)
+
+        weatherNetworkDataSource.downloadedCurrentWeather.observe(viewLifecycleOwner, Observer {
+            currentWeatherText.text = it.currentWeatherEntry.toString()
+        })
         GlobalScope.launch(Dispatchers.Main) {
-            val response = apiService.getCurrentWeatherAsync("New York").await()
-            currentWeatherText.text = response.currentWeatherEntry.toString()
+            weatherNetworkDataSource.fetchCurrentWeather(location = "New York")
         }
+
+//
+//        GlobalScope.launch(Dispatchers.Main) {
+//            val response = apiService.getCurrentWeatherAsync("New York").await()
+//            currentWeatherText.text = response.currentWeatherEntry.toString()
+//        }
     }
 
 }
